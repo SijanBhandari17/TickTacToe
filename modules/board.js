@@ -1,31 +1,42 @@
 import { player1, player2 } from "./players.js";
+
 export const gameBoard = (function() {
 
 	const container = document.querySelector(".grid-container")
+	const winnerDialog = document.querySelector(".winner-dialog");
+	const winner = document.querySelector(".winner")
+
 	let turnCounter = 0;
+	let domElement = [];
 	let winCount = 0
-	const matrix = {
-		A: [0, null],
-		B: [0, null],
-		C: [0, null],
-		D: [0, null],
-		E: [0, null],
-		F: [0, null],
-		G: [0, null],
-		H: [0, null],
-		I: [0, null],
-	}
-	function setValue(position, mark) {
+	let matrix = {}
+
+	function setValue(item, mark) {
+		const position = item.dataset.position;
 		matrix[position][0] = 1
 		matrix[position][1] = mark
 		winCount++;
 		if (winCount > 4) {
-			checkVictory()
+			let mark = checkVictory()
+			if (mark != false) {
+				displayWinner(mark)
+			}
 		}
 	}
 	function display() {
 		return matrix
 	}
+	function displayWinner(mark) {
+		if (player1.getMark() == mark) {
+			winner.textContent = `${player1.getName()} is the winner`
+		}
+		else {
+			winner.textContent = `${player2.getName()} is the winner`
+		}
+
+		winnerDialog.showModal()
+	}
+
 	function checkVictory() {
 
 		const values = Object.values(matrix)
@@ -50,7 +61,7 @@ export const gameBoard = (function() {
 
 		const finalCheck = (checkRow || checkColumn || checkDiagonal)
 		if (finalCheck != false) {
-			resetBoard()
+			setTimeout(resetBoard, 2000)
 			return finalCheck
 		}
 		else { return false }
@@ -69,21 +80,29 @@ export const gameBoard = (function() {
 		}
 	}
 	function resetBoard() {
-		for (const keys in matrix) {
-			matrix[keys] = [0, null]
+		for (const items of domElement) {
+			items.textContent = ""
+			items.classList.remove("marked")
+			matrix[items.dataset.position] = [0, null]
 		}
+		turnCounter = 0;
 	}
 	function displayBoard() {
 		const divArray = []
+		let k = 0;
 		for (let i = 0; i < 3; i++) {
-
 			const individualContainer = document.createElement('div');
 			divArray[i] = []
 
 			for (let j = 0; j < 3; j++) {
 				const div = document.createElement('div');
-				div.classList.add(`row${j}`);
+				div.classList.add(`row${i}${j}`);
+				div.dataset.position = `${k}`
+				k++
 				divArray[i][j] = div;
+
+				matrix[div.dataset.position] = [0, null];
+
 			}
 			divArray[i].map((child) => {
 				individualContainer.appendChild(child)
@@ -91,26 +110,29 @@ export const gameBoard = (function() {
 			individualContainer.classList.add("individual-container")
 			container.appendChild(individualContainer)
 		}
-		divArray.forEach((row) => {
-			row.forEach((item) => {
-				item.addEventListener('click', () => {
-					addMark(item)
-				})
+		domElement = document.querySelectorAll('[class^="row"]');
+		domElement.forEach((item) => {
+			item.addEventListener('click', () => {
+				addMark(item)
 			})
-		});
+		})
 	}
 	function addMark(item) {
+		if (matrix[item.dataset.position][0] == 1) {
+			return;
+		}
 		if (turnCounter % 2 == 0) {
 			item.textContent = player1.getMark();
+			setValue(item, player1.getMark())
 			turnCounter++;
 		}
 		else {
 			item.textContent = player2.getMark()
+			setValue(item, player2.getMark())
 			turnCounter++;
 		}
 
 		item.classList.add('marked');
 	}
-
 	return { setValue, display, checkVictory, resetBoard, displayBoard }
 })()
