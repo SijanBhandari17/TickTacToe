@@ -1,0 +1,240 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+@font-face {
+	font-family: 'MyCustomFont';
+	src: url('../fonts/Norse-Bold.otf') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	font-family: 'MyCustomFont', sans-serif;
+	background-color: #f9fafb;
+	padding: 2rem;
+}
+
+h1 {
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+/* Form container */
+form {
+	width: 100%;
+}
+
+.main-div {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.player1,
+.player2 {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+
+.name-section {
+	position: relative;
+	width: 60%;
+}
+
+input[type="text"] {
+	height: 3rem;
+	width: 100%;
+	padding: 0 10px;
+	font-size: 24px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+input[type="text"]:focus {
+	outline: none;
+	border-color: #0066ff;
+}
+
+/* Floating labels for text inputs */
+.name-section label {
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+	color: #666;
+	transition: all 0.3s ease;
+	pointer-events: none;
+}
+
+.name-section input:not(:placeholder-shown)+label,
+.name-section input:focus+label {
+	transform: translateY(-30px) scale(0.9);
+	color: gray;
+	background-color: #fff;
+	padding: 0 5px;
+}
+
+.marks-container {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.radio-group {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.radio-group label {
+	font-size: 20px;
+	margin-left: 3px;
+	position: static;
+	/* Prevent radio labels from floating */
+}
+
+/* Custom radio button styling */
+input[type="radio"] {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #ccc;
+	border-radius: 50%;
+	outline: none;
+	cursor: pointer;
+}
+
+input[type="radio"]:checked {
+	border-color: #0066ff;
+	background-color: #fff;
+	box-shadow: inset 0 0 0 5px #0066ff;
+}
+
+/* Dialog styling */
+dialog {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 500px;
+	max-width: 90vw;
+	padding: 2rem;
+	border-radius: 8px;
+	border: 1px solid #ddd;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+	background-color: #fff;
+}
+
+dialog::backdrop() {
+	backdrop-filter: 5px;
+}
+
+/* Button styling */
+.start-game {
+	display: block;
+	width: 200px;
+	height: 3rem;
+	margin: 2rem auto 0;
+	background-color: #0066ff;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	font-family: 'MyCustomFont', sans-serif;
+	font-size: 24px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.start-game:hover {
+	background-color: #0052cc;
+}
+
+.start-game:active {
+	background-color: #004099;
+	transform: translateY(1px);
+}
+
+.start-game:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.3);
+}
+
+/* Make form responsive on smaller screens */
+@media (max-width: 500px) {
+
+	.player1,
+	.player2 {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.name-section {
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+
+	.marks-container {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+.grid-container {
+	display: flex;
+	flex-direction: column;
+	height: 600px;
+	width: 600px;
+	margin: 0 auto 0;
+	padding: 0.5rem;
+}
+
+.individual-container {
+	display: flex;
+	background-color: white;
+	text-align: center;
+	flex: 1;
+	outline: 2px solid black;
+	cursor: pointer;
+}
+
+.player1-info,
+.player2-info {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 32px;
+	line-height: 1.6;
+}
+
+.player1-mark,
+.player2-mark {
+	text-align: center;
+}
+
+[class^="row"] {
+	flex: 1;
+	outline: 1px solid black
+}
+
+.main-wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.marked {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 5vmin;
+	/* Responsive to viewport */
+	font-weight: bold;
+	width: 100%;
+	height: 100%;
+}
