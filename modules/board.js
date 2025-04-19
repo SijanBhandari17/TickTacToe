@@ -22,6 +22,11 @@ export const gameBoard = (function() {
 				displayWinner(mark)
 			}
 		}
+		if (winCount == 9) {
+			setTimeout(resetBoard, 2000)
+			winner.textContent = `It's a draw`
+			winnerDialog.showModal()
+		}
 	}
 	function display() {
 		return matrix
